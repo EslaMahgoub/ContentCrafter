@@ -57,7 +57,7 @@ value = "3.11.7"
 
 [[build.env]]
 name = "GOOGLE_ENTRYPOINT"
-value = "gunicorn cfehome.wsgi:application --bind \"0.0.0.0:$PORT\""
+value = "gunicorn config.wsgi:application --bind \"0.0.0.0:$PORT\""
 ```
 The `GOOGLE_ENTRYPOINT` is the command that will be run when the container is started. In this case, it's the production version of running `python manage.py runserver` but with `gunicorn` instead of `runserver`.
 

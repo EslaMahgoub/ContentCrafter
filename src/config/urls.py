@@ -1,5 +1,5 @@
 """
-URL configuration for cfehome project.
+URL configuration for config project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from . import views
 
 urlpatterns = [
+    path("", views.homepage),
     path("admin/", admin.site.urls),
 ]
