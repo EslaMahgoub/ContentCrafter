@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: content-engine
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: my-container
+        image: eslamahgoub/content-engine:latest
+        env:
+          - name: PORT
+            value: "8080"
+          - name: VERSION
+            value: "1.0.0"
+          - name: WELCOME_MSG
+            valueFrom:
+              configMapKeyRef:
+                name: content-engine-configmap
+                key: WELCOME_MSG
+        # envFrom:
+        #   - configMapRef:
+        #     name: django-configmap
+        envFrom:
+          - secretRef:
+              name: content-engine-secret
+        ports:
+          - containerPort: 8080
