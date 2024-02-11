@@ -1,0 +1,42 @@
+name: Sync K8s Rollout
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  k8s_apply:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+      GKE_CLUSTER: content-engine
+      GKE_ZONE: europe-central2-a
+      DEPLOYMENT_NAME: ${{ secrets.DEPLOYMENT_NAME || 'content-engine'}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Kubectl
+        uses: azure/setup-kubectl@v3
+      - name: Configure Kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+
+      - name: Authenticating via Service Account Key JSON
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GKE_SA_KEY }}'
+      - name: Get the GKE credentials so we can deploy to the cluster
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          project_id: ${{ secrets.GKE_PROJECT }}
+          
+      - name: Apply K8s Manifests
+        run: |
+          kubectl apply -f k8s/
+      - name: Trigger K8s Deployment Rollout
+        run: |
+          kubectl rollout restart deployments/${{ env.DEPLOYMENT_NAME }}
+      - name: Verify K8s Deployment Rollout
+        run: |
+          kubectl rollout status deployments/${{ env.DEPLOYMENT_NAME }}
