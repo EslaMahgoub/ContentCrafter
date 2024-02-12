@@ -5,6 +5,10 @@ from config.utils.generators import unique_slugify
 
 User = settings.AUTH_USER_MODEL
 
+class AnonymousProject():
+  value = None
+  is_activated = False
+
 class Project(models.Model):
   owner = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
   title = models.CharField(max_length=120, null=True)
@@ -13,6 +17,11 @@ class Project(models.Model):
   updated = models.DateTimeField(auto_now_add=False, auto_now=True)
   timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 
+
+  @property
+  def is_activated(self):
+    return True
+  
   class Meta:
     ordering = ('title',)
 
