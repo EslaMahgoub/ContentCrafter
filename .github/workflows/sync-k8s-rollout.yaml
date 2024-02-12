@@ -34,6 +34,8 @@ jobs:
           metadata:
             name: content-engine-secret
           stringData:
+            DJANGO_DEBUG: "1"
+            DATABASE_URL: "${{ secrets.DATABASE_URL}}"
             DJANGO_SECRET_KEY: "${{ secrets.DJANGO_SECRET_KEY}}"
           EOF
       - name: Authenticating via Service Account Key JSON

@@ -6,8 +6,8 @@ spec:
   selector:
     app: web
   # type: NodePort # public ip -> attached to the vm
-  # type: ClusterIP #private service
-  type: LoadBalancer
+  type: ClusterIP #private service
+  # type: LoadBalancer
   ports:
     - name: http
       protocol: TCP

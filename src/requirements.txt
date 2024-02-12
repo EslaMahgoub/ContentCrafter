@@ -1,2 +1,6 @@
 Django>=4.2,<4.3
 gunicorn
+python-decouple
+dj-database-url
+# psycopg2 # requires os-level installs, should be used with docker not builder pack
+psycopg2-binary #change to psycopg2 when using docker build

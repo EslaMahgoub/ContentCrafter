@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from .env import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@%2wb&!8-@iwf4-2zsmeglkf0$y)c*+@%8-#s@db==nqg%a+tk'
+SECRET_KEY = config("DJANGO_SECRET_KEY", default=None, cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #twingate
+DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -83,6 +84,17 @@ DATABASES = {
     }
 }
 
+DATABASE_URL = config("DATABASE_URL", default=None)
+if DATABASE_URL is not None:
+  import dj_database_url
+  dj_database_url_config = dj_database_url.config(
+    default=DATABASE_URL,
+    conn_max_age=60,
+    conn_health_checks=True
+  )
+  DATABASES = {
+    'default': dj_database_url_config
+  }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
