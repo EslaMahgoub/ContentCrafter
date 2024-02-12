@@ -28,8 +28,8 @@ spec:
         # envFrom:
         #   - configMapRef:
         #     name: django-configmap
-        # envFrom:
-        #   - secretRef:
-        #       name: content-engine-secret
+        envFrom:
+          - secretRef:
+              name: content-engine-secret
         ports:
           - containerPort: 8080
