@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 from projects.models import Project
@@ -23,3 +24,7 @@ class Item(models.Model):
     if self.added_by:
       self.added_by_username = self.added_by.username
     super().save(*args, **kwargs)
+
+  def get_absolute_url(self):
+      return reverse("items:detail", kwargs={"id": self.id})
+  
