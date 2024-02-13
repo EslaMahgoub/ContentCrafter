@@ -8,17 +8,18 @@ def generate_random_string(size=10):
   return "".join(random_chars)
 
 
-def unique_slugify(instance, _slug=None, size=5, slug_field="slug", title_field="title"):
+def unique_slugify(instance, _slug=None, size=5, slug_field="slug", title_field="title", invalid_slug='create'):
   '''
   TODO: celery task to handle.
   '''
-  random_str = generate_random_string(size=size)
   to_slug_field = getattr(instance, title_field)
   slug = slugify(to_slug_field)
   if _slug is not None:
     slug = slugify(_slug)
-
-  lookup = {}
+  if slug == invalid_slug:
+    random_str = generate_random_string(size=size)
+    slug = f"{invalid_slug}-{random_str}"
+  lookup = {} 
   lookup[f"{slug_field}__iexact"] = slug
   ModelClass = instance.__class__
   qs_exists = ModelClass.objects.filter(**lookup).exists()

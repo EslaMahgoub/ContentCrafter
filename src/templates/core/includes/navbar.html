@@ -14,6 +14,10 @@
           
           <a href="{% url 'items:create' %}" class=" {% if request.path == '/items/create/' %}active{% endif %} nav-item-text" aria-current="page">New item</a>
         </li>
+
+        <li>
+          <a href="{% url 'projects:list' %}" class=" {% if request.path == '/projects/list/' %}active{% endif %} nav-item-text" aria-current="page">Projects</a>
+        </li>
         
         {% if request.user.is_authenticated %}
           <li>
