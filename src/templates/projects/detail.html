@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>{{instance.title}}</h1>
+  <h1>Project-Name: {{instance.title}}</h1>
   {% if request.project == instance %}
     {% include "projects/snippets/list.html" with object_list=items_qs %}
   {% else %}
-  <p>Activate to continue</p>
+  <a href="{{ instance.get_activate_url }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">
+    <div class="inline-flex items-center">
+      Activate to continue
+    </div>
+  </a>
   {% endif %}
   {% include 'projects/snippets/form.html' with form=form btn_label="Update"  %}
 {% endblock content %}

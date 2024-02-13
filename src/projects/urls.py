@@ -8,6 +8,6 @@ urlpatterns = [
     path("create/", views.project_create_view, name="create"),
     path("<slug:handle>/", views.project_detail_update_view, name="detail"),
     path("<slug:handle>/delete/", views.project_delete_view, name="delete"),
-    path('activate/<slug:handle>/', views.activate_project_view),
-    path('deactivate/<slug:handle>/', views.deactivate_project_view),
+    path('activate/<slug:handle>/', views.activate_project_view, name="activate_project"),
+    path('deactivate/', views.deactivate_project_view, name="deactivate_project"),
 ]
