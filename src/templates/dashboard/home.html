@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+{% include "items/table.html" with items_list=items_list %}
+<div class=" mt-5"> 
+  <a href="{{ item_create_url }}" class="btn-purple">Create new Item</a>
+</div>
+
+
+{% endblock %}
