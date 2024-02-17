@@ -3,12 +3,15 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from . import forms
 from .models import Item
+from projects.decorators import project_required
 
+@project_required
 @login_required
 def item_list_view(request):
   object_list = Item.objects.filter(project=request.project)
   return render(request, 'items/list.html', {"object_list": object_list})
 
+@project_required
 @login_required
 def item_detail_update_view(request, id=None):
   instance = get_object_or_404(Item, id=id, project=request.project)
@@ -20,10 +23,9 @@ def item_detail_update_view(request, id=None):
     return redirect(item_obj.get_absolute_url())
   return render(request, 'items/detail.html', {"instance": instance, "form": form})
 
+@project_required
 @login_required
 def item_create_view(request):
-  if not request.project.is_activated:
-    return render(request, 'project.activate.html', {})
   form = forms.ItemCreateForm(request.POST or None)
   if form.is_valid():
     item_obj = form.save(commit=False)
@@ -36,7 +38,7 @@ def item_create_view(request):
   }
   return render(request, 'items/create.html', context)
 
-
+@project_required
 @login_required
 def item_delete_view(request, id=None):
   instance = get_object_or_404(Item, id=id, project=request.project)
