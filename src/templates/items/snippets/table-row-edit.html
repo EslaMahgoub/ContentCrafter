@@ -1,0 +1,19 @@
+<tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700" id="item-table-row-{{instance.id}}">
+  <td colspan="4">
+    <form
+      class="tw-form"
+      method="POST"
+      hx-swap="outerHTML "
+      hx-target="#item-table-row-{{instance.id}}"
+      hx-post="{{ instance.get_edit_url }}"
+      action="{{ instance.get_edit_url }}"
+      {% csrf_token %}
+      {% if form %}
+        {{form.as_div}}
+      {% endif %}
+      <div>
+        <button {% if delete %}class="tw-form-delete"{% endif %} type="submit">{% if btn_label %}{{btn_label}}{% else %} Submit{% endif %}</button>
+      </div>
+    </form>
+  </td>
+</tr>

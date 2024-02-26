@@ -11,3 +11,9 @@ class ItemUpdateForm(forms.ModelForm):
   class Meta:
     model = Item
     fields = ['title', 'description']
+    
+
+class ItemInlineForm(forms.ModelForm):
+  class Meta:
+    model = Item
+    fields = ['title']

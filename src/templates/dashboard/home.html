@@ -2,10 +2,13 @@
 
 
 {% block content %}
+<button id="refresh-button" class="btn-purple htmx:bg-blue-400 htmx:hover:cursor-default">
+  <span class="block htmx:hidden">Refresh</span>
+  <span class="hidden htmx:block">Refreshing...</span>
+</button>
+<div hx-get="{{ items_list_url }}" hx-trigger="load, click from:#refresh-button">
+  Loading ...
 
-{% include "items/table.html" with items_list=items_list %}
-<div class=" mt-5"> 
-  <a href="{{ item_create_url }}" class="btn-purple">Create new Item</a>
 </div>
 
 
