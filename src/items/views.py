@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
@@ -39,6 +40,34 @@ def item_detail_inline_update_view(request, id=None):
     return redirect(detail_url)
   template_name = 'items/snippets/table-row-edit.html'
   success_template = 'items/snippets/table-row.html'
+  if f"{request.method}".lower() == "patch":
+    query_dict = QueryDict(request.body)
+    data = query_dict.dict()
+    form = forms.ItemPatchForm(data)
+    if form.is_valid():
+      valid_data = form.cleaned_data
+      change = False
+      for k, v in valid_data.items():
+        if hasattr(instance, k):
+          changed = True
+          if v == "":
+            continue
+          if not v:
+            continue
+          setattr(instance, k, v)
+      if changed:
+        instance.save()
+        
+      item_obj.last_modifited_by = request.user
+      item_obj.save()
+    template_name = success_template
+    choices = Item.ItemStatus.choices
+    context = {
+      "instance": instance,
+      "choices": choices,
+      "form": form,
+    }
+    return render(request, template_name, context)
   form = forms.ItemInlineForm(request.POST or None, instance=instance)
   if form.is_valid():
     item_obj = form.save(commit=False)

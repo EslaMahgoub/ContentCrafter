@@ -10,10 +10,14 @@ class ItemCreateForm(forms.ModelForm):
 class ItemUpdateForm(forms.ModelForm):
   class Meta:
     model = Item
-    fields = ['title', 'description']
+    fields = ['title', 'status', 'description']
     
 
 class ItemInlineForm(forms.ModelForm):
   class Meta:
     model = Item
-    fields = ['title']
+    fields = ['title', 'status']
+
+class ItemPatchForm(forms.Form):
+  title = forms.CharField(required=False)
+  status = forms.CharField(required=False)
